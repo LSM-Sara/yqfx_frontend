@@ -5,7 +5,7 @@
     <div>语言</div>
   </div>
   <div class="overview-box">
-    <div class="title">
+    <div class="title"> 
       <img src="../assets/logo.png" class="logo" />
       <div @click="goToHome">首页</div>
       <div>ESG责任投资</div>
@@ -20,6 +20,8 @@
       <div class="sub-title">舆情分析第x组结课实验</div>
     </div>
 
+    <div>
+    </div>
 
     <div class="box-container">
       <WordCloud :keywords="keyWordsList" />
@@ -622,6 +624,7 @@ export default defineComponent({
   font-size: 15px;
   border-bottom: 0.8px solid rgba(128, 128, 128, 0.375);
   color: grey;
+  position: sticky;
 }
 .search-box {
   width: 99vw;
@@ -866,24 +869,36 @@ export default defineComponent({
   justify-content: center;
   position: relative;
   overflow: hidden;
+  
+  @keyframes fadeIn{
+    0% {
+      background-position-x: 100%;
+    }
+    50% {
+      background-position-x: 50%;
+    }
+  100% {
+    background-position-x:0%;
+  }
+  }
   .main-title{
     font-size:6.2rem;
     margin-bottom: 2rem;
     background-image: linear-gradient(75deg, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 33.33%, rgba(0, 0, 0, 0) 66.67%, rgba(0, 0, 0, 0) 100%);
     background-size: 300% 100%;
-    background-position-x: 100%;
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
-    transition: 2s background-position-x ease-in-out;
-  }
-  .main-title:hover{
-    cursor: pointer;
-    background-position-x:0%;
+    animation: fadeIn 3.5s 0.5s ease-in-out 1;
   }
   .sub-title{
     font-size:2rem;
-    color:rgba(0, 0, 0, 0.683);
+    background-image: linear-gradient(75deg, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 33.33%, rgba(0, 0, 0, 0) 66.67%, rgba(0, 0, 0, 0) 100%);
+    background-size: 300% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: fadeIn 3s  1s ease-in-out 1;
   }
   .background{
     position: absolute;
