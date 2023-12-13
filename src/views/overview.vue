@@ -57,7 +57,7 @@
       <WordCloud :keywords="keyWordsList" />
     </div>
     <div class="news">
-      <div class="subtitle">近期新闻与研究</div>
+      <div class="subtitle">2021-2023年媒体关注事件TOP3</div>
       <div class="card-container">
         <div class="card">
           <img class="news-pic" src="../assets/report.JPG" />
