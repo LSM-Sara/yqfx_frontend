@@ -42,7 +42,7 @@ export default defineComponent({
         series: [
           {
             type: 'wordCloud',
-            sizeRange: [10, 50],
+            sizeRange: [10, 80],
             rotationRange: [-90, 90],
             gridSize: 0,
             shape: 'pentagon',

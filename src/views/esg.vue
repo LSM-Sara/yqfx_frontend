@@ -8,9 +8,8 @@
     <div class="title">
       <img src="../assets/logo.png" class="logo" />
       <div @click="goToHome">首页</div>
-      <div>ESG责任投资</div>
-      <div @click="goToEsg">ESG数据</div>
-      <div>研究与洞见</div>
+      <div @click="goToEsg">数据集分析</div>
+      <div @click="goToEsgData">模型体验</div>
       <div>关于我们</div>
     </div>
     <div>
@@ -199,9 +198,16 @@ export default defineComponent({
         path: '/'
       })
     }
+    const goToEsgData = () => {
+      console.log('esgdata')
+      router.push({
+        path: '/esgdata'
+      })
+    }
     return {
       goToEsg,
-      goToHome
+      goToHome,
+      goToEsgData
     }
   }
 })

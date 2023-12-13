@@ -1,23 +1,69 @@
 <template>
-  <div class="header">
+  <el-affix :offset="0">
+    <div class="header">
     <div>登陆/注册</div>
     <div>联系我们</div>
     <div>语言</div>
   </div>
+  </el-affix>
   <div class="overview-box">
     <div class="title">
       <img src="../assets/logo.png" class="logo" />
       <div @click="goToHome">首页</div>
-      <div>ESG责任投资</div>
-      <div @click="goToEsg">ESG数据</div>
-      <div>研究与洞见</div>
+      <div @click="goToEsg">数据集分析</div>
+      <div @click="goToEsgData">模型体验</div>
       <div>关于我们</div>
     </div>
   </div>
   <div class="display-container">
+    <el-row class="tac">
+    <el-col :span="12">
+      <el-menu
+        active-text-color="#ffd04b"
+        background-color="#545c64"
+        class="nav"
+        default-active="2"
+        text-color="#fff"
+        @open="handleOpen"
+        @close="handleClose"
+      >
+        <el-sub-menu index="1">
+          <template #title>
+            <el-icon><location /></el-icon>
+            <span>Navigator One</span>
+          </template>
+          <el-menu-item-group title="Group One">
+            <el-menu-item index="1-1">item one</el-menu-item>
+            <el-menu-item index="1-2">item two</el-menu-item>
+          </el-menu-item-group>
+          <el-menu-item-group title="Group Two">
+            <el-menu-item index="1-3">item three</el-menu-item>
+          </el-menu-item-group>
+          <el-sub-menu index="1-4">
+            <template #title>item four</template>
+            <el-menu-item index="1-4-1">item one</el-menu-item>
+          </el-sub-menu>
+        </el-sub-menu>
+        <el-menu-item index="2">
+          <el-icon><icon-menu /></el-icon>
+          <span>Navigator Two</span>
+        </el-menu-item>
+        <el-menu-item index="3" disabled>
+          <el-icon><document /></el-icon>
+          <span>Navigator Three</span>
+        </el-menu-item>
+        <el-menu-item index="4">
+          <el-icon><setting /></el-icon>
+          <span>Navigator Four</span>
+        </el-menu-item>
+      </el-menu>
+    </el-col>
+  </el-row>
     <div class="display-box">
-      <Chart />
+    <el-empty description="还没有输入" />
+     <el-input class="input-box" v-model="input" placeholder="Please input" />
     </div>
+    
   </div>
   <Footer show-border />
 </template>
@@ -26,7 +72,6 @@
 import { defineComponent } from 'vue'
 import router from '@/router'
 import Chart from '@/components/Chart/chart.vue'
-
 export default defineComponent({
   name: 'EsgData',
   components: { Chart },
@@ -49,10 +94,18 @@ export default defineComponent({
         path: '/esgdata'
       })
     }
+    const handleOpen = (key, keyPath) => {
+  console.log(key, keyPath)
+}
+const handleClose = (key, keyPath) => {
+  console.log(key, keyPath)
+}
     return {
       goToEsg,
       goToHome,
-      goToEsgData
+      goToEsgData,
+      handleOpen,
+      handleClose
     }
   }
 })
@@ -75,6 +128,7 @@ export default defineComponent({
   }
 }
 .header {
+  background-color: white;
   height: 6vh;
   width: 100vw;
   padding-left: 70vw;
@@ -97,10 +151,23 @@ export default defineComponent({
 }
 .display-box {
   width: 90vw;
+  height:70vh;
+  position: relative;
+  .input-box{
+    position: absolute;
+    bottom: 10px;
+    width: 95%;
+    left: 2%;
+  }
 }
 .display-container {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.nav{
+  width: 15vw;
+  height: 70vh;
 }
 </style>

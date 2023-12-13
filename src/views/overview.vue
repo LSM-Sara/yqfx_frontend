@@ -1,26 +1,56 @@
 <template>
-  <div class="header">
+   <el-affix :offset="0">
+    <div class="header">
     <div>登陆/注册</div>
     <div>联系我们</div>
     <div>语言</div>
   </div>
+   </el-affix>
   <div class="overview-box">
-    <div class="title"> 
+    <div class="title">
       <img src="../assets/logo.png" class="logo" />
       <div @click="goToHome">首页</div>
-      <div>ESG责任投资</div>
-      <div style="position: relative" @click="goToEsg">ESG数据</div>
-      <div>研究与洞见</div>
+      <div @click="goToEsg">数据集分析</div>
+      <div @click="goToEsgData">模型体验</div>
       <div>关于我们</div>
     </div>
 
     <div class="main-title-container">
-      <img class="background" src="../assets/images/china_all.png" />
-        <div class="main-title">中美台三方媒体实体情感分析</div>
-      <div class="sub-title">舆情分析第x组结课实验</div>
+      <img class="background" :style="{ opacity: opacity }" src="../assets/images/china_all.png" />
+      <div class="main-title" v-show="showTitle">中美台三方媒体实体情感分析</div>
+      <div class="sub-title" v-show="showTitle">舆情分析第x组结课实验</div>
     </div>
-
+    <div class="data-container">
     <div>
+    <el-carousel
+      height="400px"
+      direction="vertical"
+      type="card"
+      :autoplay="true"
+      class="news-pic-box"
+    >
+      <el-carousel-item v-for="item in 4" :key="item" class="news-pics">
+        <h3 text="2xl" justify="center">{{ item }}</h3>
+      </el-carousel-item>
+    </el-carousel>
+    </div>
+    <div id="side-box">
+    <div class="discribsion">
+    <div v-show="!showTitle">
+      <span><i>从中台</i></span>
+      <span><i>4</i></span>
+      <span><i>家媒体中</i></span>
+    </div>
+    <div v-show="!showTitle">
+      <span><i>获取</i></span>
+      <span><i>逾5000条</i></span>
+      <span><i>数据</i></span>
+    </div>
+    </div>
+    <div class="chart-box">
+      <div id="newsLine" v-show="!showTitle"></div>
+    </div>
+    </div>
     </div>
 
     <div class="box-container">
@@ -135,10 +165,12 @@ import { wordCloudData }  from '@/data/cloud'
 export default defineComponent({
   name: 'Overview',
   components: {
-    WordCloud
+    WordCloud,
   },
   setup() {
     const keyWordsList = ref([])
+    const showTitle=ref(true)
+    const opacity = ref(0.6);
     const goToEsg = () => {
       console.log('esg')
       router.push({
@@ -159,9 +191,28 @@ export default defineComponent({
     }
     keyWordsList.value = wordCloudData
     onMounted(() => {
+       // 监听滚动事件
+       window.addEventListener('scroll', handleScroll);
+
+      // 在组件销毁时移除滚动事件监听
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
     });
+    // 处理滚动事件的函数
+    const handleScroll = () => {
+      // 获取滚动的垂直偏移量
+      const scrollY = window.scrollY || window.pageYOffset;
+
+      // 计算透明度，根据实际需求调整
+      opacity.value = 0.6 - scrollY / 500; // 500 是滚动的偏移量，可以根据需要调整
+      if(scrollY>=350) showTitle.value=false;
+      if(scrollY<350) showTitle.value=true;
+    };
     return {
       keyWordsList,
+      opacity,
+      showTitle,
       goToEsg,
       goToHome,
       goToEsgData
@@ -174,6 +225,7 @@ export default defineComponent({
     const myChart4 = echarts.init(document.getElementById('chart4'))
     const lineChart = echarts.init(document.getElementById('line'))
     const barChart = echarts.init(document.getElementById('bar'))
+    const newsLineChart= echarts.init(document.getElementById('newsLine'))
 
     const option = {
       title: {
@@ -555,6 +607,63 @@ export default defineComponent({
         }
       ]
     }
+
+
+  const newsOption = {
+    grid: [
+           {
+              left: 0,
+              top: 40,
+              right: 30,
+              bottom: 40,
+              containLabel: true,
+           },
+        ],
+  yAxis: {
+    data: ['人民日报','新华网','中国日报','TVB'],
+    axisTick: {show: false},
+  },
+  xAxis: {
+    splitLine: {show: false},
+    axisLabel: {show:false}
+},
+  series: [
+    {
+      type: 'bar',
+      data: [23, 24, 18, 25],
+      label: {
+				show: true,
+        position: 'right', //数值展示的位置
+				textStyle: {
+					color: '#000',
+					fontSize: 13
+				},
+      },
+      itemStyle: {
+        color: {
+          type: "linear",
+          x: 1, // 右
+          y: 0, // 下
+          x2: 0, // 左
+          y2: 0, // 上
+          colorStops: [
+            {
+              offset: 0,
+              color: " rgb(0, 36, 82,0.8)", // 0% 处的颜色
+            },
+            {
+              offset: 1,
+              color: " rgb(110, 128, 150)", // 90% 处的颜色
+            }
+          ]
+        }
+      }
+    }
+  ]
+  };
+
+
+    newsLineChart.setOption(newsOption)
     barChart.setOption(option5)
     lineChart.setOption(option4)
     myChart4.setOption(option3)
@@ -579,6 +688,12 @@ export default defineComponent({
     opacity: 1;
   }
 }
+
+@keyframes swift-up {
+    to {
+    top: 0rem;
+    }
+  }
 .fade-enter-active, .fade-leave-active {
   transition: opacity 5s; /* 过渡时间，可以根据需要调整 */
 }
@@ -615,6 +730,7 @@ export default defineComponent({
   }
 }
 .header {
+  background-color: white;
   height: 6vh;
   width: 100vw;
   padding-left: 70vw;
@@ -648,9 +764,6 @@ export default defineComponent({
   align-items: center;
   justify-content: center;
   margin-left: 0.5vw;
-}
-.search {
-  height: 3vh;
 }
 .logo {
   height: 10vh;
@@ -884,7 +997,7 @@ export default defineComponent({
   .main-title{
     font-size:6.2rem;
     margin-bottom: 2rem;
-    background-image: linear-gradient(75deg, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 33.33%, rgba(0, 0, 0, 0) 66.67%, rgba(0, 0, 0, 0) 100%);
+    background-image: linear-gradient(75deg, rgb(0, 0, 0, 0.8) 0%, rgb(0, 0, 0, 0.8) 33.33%, rgba(0, 0, 0, 0) 66.67%, rgba(0, 0, 0, 0) 100%);
     background-size: 300% 100%;
     background-clip: text;
     -webkit-background-clip: text;
@@ -893,7 +1006,7 @@ export default defineComponent({
   }
   .sub-title{
     font-size:2rem;
-    background-image: linear-gradient(75deg, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 33.33%, rgba(0, 0, 0, 0) 66.67%, rgba(0, 0, 0, 0) 100%);
+    background-image: linear-gradient(75deg, rgb(0, 0, 0, 0.8) 0%, rgb(0, 0, 0, 0.8) 33.33%, rgba(0, 0, 0, 0) 66.67%, rgba(0, 0, 0, 0) 100%);
     background-size: 300% 100%;
     background-clip: text;
     -webkit-background-clip: text;
@@ -906,6 +1019,129 @@ export default defineComponent({
     top:10%;
     z-index: -100;
     opacity: 0.6;
+  }
+}
+.el-carousel__item h3 {
+  color: #475669;
+  opacity: 0.75;
+  line-height: 200px;
+  margin: 0;
+  text-align: center;
+}
+
+.el-carousel__item:nth-child(2n) {
+  background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n + 1) {
+  background-color: #d3dce6;
+}
+.data-container{
+  margin-top: 8vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  #side-box{
+    height: 65vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    .discribsion{
+    font-size: 2rem;
+    font-family:  REEJI-CHAO-RanSerifGB-Flash;
+    align-self: flex-start;
+    width: 35vw;
+    height:20vh;
+    margin-left: 5vw;
+    margin-bottom: 2vh;
+    margin-top: 4vh;
+    color: black;
+    span {
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+    top: .8rem;
+    animation: .3s swift-up ease-in-out forwards;
+    }
+    i {
+    font-style: normal;
+    position: relative;
+    top: 4.2rem;
+    animation: .5s swift-up ease-in-out forwards;
+    }
+
+    span:nth-of-type(1) i {
+    animation-delay: 0s;
+    }
+
+    span:nth-of-type(2) i {
+      animation-delay: .1s;
+      font-size: 4.2rem;
+      background-image: linear-gradient(to right, rgb(0, 36, 82), rgb(110, 128, 150));
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      font-weight: bold;
+    }
+    span:nth-of-type(3) i {
+      animation-delay: .2s;
+    }
+    span:nth-of-type(4) i {
+      animation-delay: .3s;
+    }
+    span:nth-of-type(5) i {
+      animation-delay: .4s;
+      font-size: 4.2rem;
+      background-image: linear-gradient(to right, rgb(0, 36, 82), rgb(110, 128, 150));
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      font-weight: bold;
+    }
+
+span:nth-of-type(6) i {
+  animation-delay: .5s;
+}
+
+span:nth-of-type(1) {
+  animation-delay: 0s;
+}
+
+span:nth-of-type(2) {
+  animation-delay: .1s;
+}
+
+span:nth-of-type(3) {
+  animation-delay: .2s;
+}
+
+span:nth-of-type(4) {
+  animation-delay: .3s;
+}
+
+    span:nth-of-type(5) {
+  animation-delay: .4s;
+    }
+
+    span:nth-of-type(6) {
+      animation-delay: .5s;
+    }
+  }
+  .chart-box{
+    width: 32vw;
+    div{
+      width: 32vw;
+      height:30vh;
+    }
+  }
+  }
+  .news-pic-box{
+    width: 40vw;
+    .news-pics{
+      height: 21vh;
+    }
   }
 }
 </style>

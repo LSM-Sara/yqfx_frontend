@@ -16,7 +16,9 @@
     "echarts-wordcloud": "^2.1.0",
     "element-plus": "^2.4.3",
     "pinia": "^2.1.7",
+    "swiper": "^11.0.5",
     "vue": "^3.3.10",
+    "vue-awesome-swiper": "^5.0.1",
     "vue-router": "^4.2.5",
     "vue3-sticky-directive": "^0.0.2"
   },
@@ -29,6 +31,7 @@
     "eslint": "^8.49.0",
     "eslint-plugin-vue": "^9.17.0",
     "jsdom": "^23.0.1",
+    "less": "^4.2.0",
     "prettier": "^3.0.3",
     "sass": "^1.69.5",
     "vite": "^5.0.5",
