@@ -29,8 +29,8 @@
       :autoplay="true"
       class="news-pic-box"
     >
-      <el-carousel-item v-for="item in 4" :key="item" class="news-pics">
-        <h3 text="2xl" justify="center">{{ item }}</h3>
+      <el-carousel-item v-for="item in 4" :key="item" class="news-pics" pause-on-hover style="background-color:#00000042">
+        <el-image  :src="url[item]" fit="fill" style="width: 99.7%; height: 99.2%;"/>
       </el-carousel-item>
     </el-carousel>
     </div>
@@ -170,7 +170,8 @@ export default defineComponent({
   setup() {
     const keyWordsList = ref([])
     const showTitle=ref(true)
-    const opacity = ref(0.6);
+    const opacity = ref(0.6)
+    const url = ref(["","https://s2.loli.net/2023/12/13/IGrbqcgJ8kKCUAo.jpg","https://s2.loli.net/2023/12/13/c4x2lC8VjmbK6o9.png","https://s2.loli.net/2023/12/13/gwNmVnyDBAfSrYP.png","https://s2.loli.net/2023/12/13/QOqVPBrvAym3WkR.png"])
     const goToEsg = () => {
       console.log('esg')
       router.push({
@@ -213,6 +214,7 @@ export default defineComponent({
       keyWordsList,
       opacity,
       showTitle,
+      url,
       goToEsg,
       goToHome,
       goToEsgData
