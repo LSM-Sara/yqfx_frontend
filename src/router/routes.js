@@ -8,9 +8,9 @@ const routes = [
     component: () => import('@/components/404.vue')
   },
   {
-    path: '/esg',
-    name: 'esg',
-    component: () => import('@/views/esg.vue')
+    path: '/chart',
+    name: 'chart',
+    component: () => import('@/views/chart.vue')
   },
   {
     path: '/',

@@ -1,12 +1,13 @@
 <template>
   <el-affix :offset="0">
-    <div class="header">
+    <header class="header">
       <div>登陆/注册</div>
       <div>联系我们</div>
       <div>语言</div>
-    </div>
+    </header>
   </el-affix>
   <div class="overview-box">
+    <el-affix :offset="30">
     <div class="title">
       <img
         src="https://www.whu.edu.cn/images/toplog1.png"
@@ -15,7 +16,7 @@
       <div @click="goToHome">
         首页
       </div>
-      <div @click="goToEsg">
+      <div @click="goToChart">
         数据集分析
       </div>
       <div @click="goTomodel">
@@ -23,7 +24,7 @@
       </div>
       <div>关于我们</div>
     </div>
-
+  </el-affix>
     <div class="main-title-container">
       <img
         class="background"
@@ -208,7 +209,7 @@
       </div>
       </div>
     </div>
-
+    <div class="goto-model" @click="goTomodel">意犹未尽？点此即刻体验！>>></div>
     <Footer show-border />
   </div>
 </template>
@@ -231,25 +232,25 @@ export default defineComponent({
     const opacity = ref(0.6)
     const showWordCloud=ref(false)
     const url = ref(['','https://s2.loli.net/2023/12/13/IGrbqcgJ8kKCUAo.jpg','https://s2.loli.net/2023/12/13/c4x2lC8VjmbK6o9.png','https://s2.loli.net/2023/12/13/gwNmVnyDBAfSrYP.png','https://s2.loli.net/2023/12/13/QOqVPBrvAym3WkR.png'])
-    const goToEsg = () => {
-      console.log('esg')
-      router.push({
-        path: '/esg'
-      })
-    }
-    const goToHome = () => {
-      console.log('home')
-      router.push({
-        path: '/'
-      })
-    }
-    const goTomodel = () => {
-      console.log('model')
-      router.push({
-        path: '/model'
-      })
-    }
-    keyWordsList.value = wordCloudData
+    const goToChart = () => {
+        console.log('chart')
+        router.push({
+          path: '/chart'
+        })
+      }
+      const goToHome = () => {
+        console.log('home')
+        router.push({
+          path: '/'
+        })
+      }
+      const goTomodel = () => {
+        console.log('model')
+        router.push({
+          path: '/model'
+        })
+      }
+    keyWordsList.value = wordCloudData.slice(0, 500)
     onMounted(() => {
       // 监听滚动事件
       window.addEventListener('scroll', handleScroll)
@@ -282,7 +283,7 @@ export default defineComponent({
       showTitle,
       showWordCloud,
       url,
-      goToEsg,
+      goToChart,
       goToHome,
       goTomodel
     }
@@ -676,6 +677,7 @@ export default defineComponent({
    font-size: 18px;
    position: relative;
    padding-left: 10vw;
+   background-color: white;
  }
 }
 .header {
@@ -998,5 +1000,12 @@ span:nth-of-type(4) {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.goto-model{
+  text-decoration: underline;
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+  cursor: pointer;
 }
 </style>

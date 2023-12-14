@@ -8,7 +8,7 @@
       <div class="title">
       <img src="https://www.whu.edu.cn/images/toplog1.png" class="logo" />
       <div @click="goToHome">首页</div>
-      <div @click="goToEsg">数据集分析</div>
+      <div @click="goToChart">数据集分析</div>
       <div @click="goTomodel">模型体验</div>
       <div>关于我们</div>
     </div>
@@ -30,10 +30,10 @@
     name: 'model',
     components: { Chart },
     setup() {
-      const goToEsg = () => {
-        console.log('esg')
+      const goToChart = () => {
+        console.log('chart')
         router.push({
-          path: '/esg'
+          path: '/chart'
         })
       }
       const goToHome = () => {
@@ -49,9 +49,9 @@
         })
       }
       return {
-        goToEsg,
         goToHome,
-        goTomodel
+        goTomodel,
+        goToChart
       }
     }
   })

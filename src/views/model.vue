@@ -1,16 +1,16 @@
 <template>
   <el-affix :offset="0">
-    <div class="header">
+    <header class="header">
     <div>登陆/注册</div>
     <div>联系我们</div>
     <div>语言</div>
-  </div>
+  </header>
   </el-affix>
   <div class="overview-box">
     <div class="title">
       <img src="https://www.whu.edu.cn/images/toplog1.png" class="logo" />
       <div @click="goToHome">首页</div>
-      <div @click="goToEsg">数据集分析</div>
+      <div @click="goToChart">数据集分析</div>
       <div @click="goTomodel">模型体验</div>
       <div>关于我们</div>
     </div>
@@ -78,24 +78,24 @@ export default defineComponent({
     const uploadable=ref(true);
     const dialogs=ref([]);
     let key=0;
-    const goToEsg = () => {
-      console.log('esg')
-      router.push({
-        path: '/esg'
-      })
-    }
-    const goToHome = () => {
-      console.log('home')
-      router.push({
-        path: '/'
-      })
-    }
-    const goTomodel = () => {
-      console.log('model')
-      router.push({
-        path: '/model'
-      })
-    }
+    const goToChart = () => {
+        console.log('')
+        router.push({
+          path: '/chart'
+        })
+      }
+      const goToHome = () => {
+        console.log('home')
+        router.push({
+          path: '/'
+        })
+      }
+      const goTomodel = () => {
+        console.log('model')
+        router.push({
+          path: '/model'
+        })
+      }
     const handleSelect=(index, indexPath)=>{
       console.log(index, indexPath)
       key=index;
@@ -137,7 +137,7 @@ export default defineComponent({
       input,
       uploadable,
       dialogs,
-      goToEsg,
+      goToChart,
       goToHome,
       goTomodel,
       handleSelect,
@@ -191,7 +191,7 @@ export default defineComponent({
   height:70vh;
   overflow: scroll;
   background-color: #f4f5f9;
-  padding-bottom: 70px;
+  padding-bottom: 55px;
 }
 .display-container {
   display: flex;
@@ -227,7 +227,7 @@ export default defineComponent({
   padding: 10px;
   .el-avatar{
     margin-left: 1.5vw;
-    margin-top: 0.5vh;
+    margin-top: 0.6vh;
     font-weight: bold;
     width: 46px;
     height: 46px;
