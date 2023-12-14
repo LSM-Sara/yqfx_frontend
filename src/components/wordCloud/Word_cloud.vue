@@ -24,7 +24,7 @@ export default defineComponent({
 
     nextTick(() => {
       chartInstance.value = Echarts.init(refChart.value)
-      const maskImage = new Image()
+      const maskImage = new Image(4000,3500)
       function getColorBySentiment(sentiment) {
         if (sentiment === 'positive') {
           return 'rgb(0, 53, 0)';

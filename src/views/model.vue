@@ -8,7 +8,7 @@
   </el-affix>
   <div class="overview-box">
     <div class="title">
-      <img src="../assets/logo.png" class="logo" />
+      <img src="https://www.whu.edu.cn/images/toplog1.png" class="logo" />
       <div @click="goToHome">首页</div>
       <div @click="goToEsg">数据集分析</div>
       <div @click="goTomodel">模型体验</div>
@@ -20,7 +20,7 @@
     <el-col :span="12">
       <el-menu
         active-text-color="#ffd04b"
-        background-color="#545c64"
+        background-color="rgb(0, 53, 0)"
         class="nav"
         default-active="0"
         text-color="#fff"
@@ -39,27 +39,28 @@
     </el-col>
   </el-row>
     <div class="display-box">
-    <el-empty description="还没有输入" v-if="!empty"/>
-    <div v-if="empty">
+    <el-empty description="还没有输入" v-if="empty" />
+    <div v-if="!empty">
       <div v-for="(item, index) in dialogs" :key="index" class="list-item">
         <el-avatar class="el-avatar"> {{item.type}} </el-avatar>
         <p class="content">{{ item.text }}</p>
     </div>
     </div>
-      <el-input 
+    </div>
+    <el-input 
         class="input-box" 
         v-model="input" 
         placeholder="请输入内容" 
-        clearable    
+        clearable   
+        position="bottom" 
+        :offset="20" 
       >
       <template #append>
-        <el-button :loading="uploadable" @click="handleUpload">
-          <img src="../assets/upload.svg" class="icon" v-show="!uploadable"/>
+        <el-button :loading="!uploadable" @click="handleUpload" id="el-button">
+          <img src="../assets/upload.svg" class="icon" v-show="uploadable"/>
         </el-button>
       </template>
       </el-input>
-    </div>
-    
   </div>
   <Footer show-border />
 </template>
@@ -74,7 +75,7 @@ export default defineComponent({
   setup() {
     const empty=ref(true);
     const input=ref('');
-    const uploadable=ref(false);
+    const uploadable=ref(true);
     const dialogs=ref([]);
     let key=0;
     const goToEsg = () => {
@@ -117,17 +118,15 @@ export default defineComponent({
         dialogs.value[dialogs.value.length - 1].text=data['text'] // 更新组件的数据
 				return data;
 			})
-			.then(data =>{
-				console.log(data);
-			})
       .finally(data=>{
         uploadable.value=true
       })
       } catch (error) {
-        console.error('Error fetching data:', error.message);
+        console.error('Error fetching data:', error.message);   
       }
     };
     const handleUpload=()=>{
+      empty.value=false;
       dialogs.value.push({type:'user',text:input.value})
       input.value='';
       dialogs.value.push({type:'model',text:''})
@@ -190,19 +189,26 @@ export default defineComponent({
   border-top: solid rgba(0, 0, 0, 0.1) 1px;
   width: 90vw;
   height:70vh;
-  position: relative;
-  .input-box{
-    position: absolute;
-    bottom: 20px;
-    height:40px;
-    width: 95%;
-    left: 2%;
-  }
+  overflow: scroll;
+  background-color: #f4f5f9;
+  padding-bottom: 70px;
 }
 .display-container {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+.input-box{
+    height:40px;
+    width: 80vw;
+    position: absolute;
+    bottom: 20px;
+    right: 40px;
+  }
+  #el-button{
+    background-color:rgb(0, 53, 0);
+    height: 99%;
+  }
 }
 
 .nav{
@@ -222,6 +228,10 @@ export default defineComponent({
   .el-avatar{
     margin-left: 1.5vw;
     margin-top: 0.5vh;
+    font-weight: bold;
+    width: 46px;
+    height: 46px;
+    background-color: rgb(0, 53, 0,0.5);
   }
   .content{
     margin-left: 5vw;

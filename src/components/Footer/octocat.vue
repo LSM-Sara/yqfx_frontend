@@ -1,6 +1,6 @@
 <template>
   <a class="octocat-link" target="_blank" :href="link">
-    <img src="../../assets/logo.png" style="width: 22px" />
+    <img src="https://www.whu.edu.cn/images/toplog1.png" style="width: 22px" />
   </a>
 </template>
 

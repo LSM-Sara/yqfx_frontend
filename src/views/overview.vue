@@ -9,7 +9,7 @@
   <div class="overview-box">
     <div class="title">
       <img
-        src="../assets/logo.png"
+        src="https://www.whu.edu.cn/images/toplog1.png"
         class="logo"
       >
       <div @click="goToHome">
@@ -44,7 +44,7 @@
       </div>
     </div>
     <div class="data-container">
-      <div>
+      <div v-show="!showTitle">
         <el-carousel
           height="400px"
           direction="vertical"
@@ -67,7 +67,7 @@
           </el-carousel-item>
         </el-carousel>
       </div>
-      <div id="side-box">
+      <div class="side-box">
         <div class="discribsion">
           <div v-show="!showTitle">
             <span><i>从中台</i></span>
@@ -90,7 +90,21 @@
     </div>
 
     <div class="box-container">
-      <WordCloud :keywords="keyWordsList" />
+      <WordCloud :keywords="keyWordsList" v-if="showWordCloud"/>
+      <div class="worcloud-dis-box">
+        <div class="discribsion">
+          <div v-show="showWordCloud">
+            <span><i>从中提取出实体</i></span>
+            <span><i>4880个</i></span>
+          </div>
+          <div v-show="showWordCloud">
+            <span><i style="color:rgb(0, 53, 0);font-weight:bold;font-size:35px">正面实体</i></span>&nbsp;
+            <span><i style="color:rgb(136, 0, 0);font-weight:bold;font-size:35px">负面实体 </i></span>&nbsp;
+            <span><i style="color:gray;font-weight:bold;font-size:35px">中立实体</i></span>&nbsp;
+            <span><i>分别有2775、1378、729个</i></span>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="news">
       <div class="subtitle">
@@ -182,18 +196,16 @@
     </div>
     <div class="statistics">
       <div class="subtitle">
-        新闻实体立场信息
+        新闻实体立场统计
       </div>
-      <div class="circle-charts-box">
-        <div id="chart_all"></div>
+      <div class="charts-box">
+        <div class="circle-charts-box">
         <div id="chart1"></div>
-        <div id="chart4"></div>
-        <div id="chart3"></div>
         <div id="chart2"></div>
+        <div id="chart3"></div>
+        <div id="chart4"></div>
+        <div id="chart5"></div>
       </div>
-      <div class="line-charts-box">
-        <div id="line"></div>
-        <div id="bar"></div>
       </div>
     </div>
 
@@ -217,6 +229,7 @@ export default defineComponent({
     const keyWordsList = ref([])
     const showTitle=ref(true)
     const opacity = ref(0.6)
+    const showWordCloud=ref(false)
     const url = ref(['','https://s2.loli.net/2023/12/13/IGrbqcgJ8kKCUAo.jpg','https://s2.loli.net/2023/12/13/c4x2lC8VjmbK6o9.png','https://s2.loli.net/2023/12/13/gwNmVnyDBAfSrYP.png','https://s2.loli.net/2023/12/13/QOqVPBrvAym3WkR.png'])
     const goToEsg = () => {
       console.log('esg')
@@ -253,13 +266,21 @@ export default defineComponent({
 
       // 计算透明度，根据实际需求调整
       opacity.value = 0.6 - scrollY / 500 // 500 是滚动的偏移量，可以根据需要调整
-      if(scrollY>=350) showTitle.value=false
-      if(scrollY<350) showTitle.value=true
+      if(scrollY>=360) showTitle.value=false
+      if(scrollY<360) showTitle.value=true
+    if(scrollY>900) {
+      showWordCloud.value=true
+      showTitle.value=true
+    }
+      if(scrollY<900){
+        showWordCloud.value=false
+      } 
     }
     return {
       keyWordsList,
       opacity,
       showTitle,
+      showWordCloud,
       url,
       goToEsg,
       goToHome,
@@ -271,65 +292,79 @@ export default defineComponent({
     const myChart2 = echarts.init(document.getElementById('chart2'))
     const myChart3 = echarts.init(document.getElementById('chart3'))
     const myChart4 = echarts.init(document.getElementById('chart4'))
-    const lineChart = echarts.init(document.getElementById('line'))
-    const barChart = echarts.init(document.getElementById('bar'))
+    const myChart5 = echarts.init(document.getElementById('chart5'))
     const newsLineChart= echarts.init(document.getElementById('newsLine'))
 
     const option = {
+      legend: {
+        // 位置设置在右侧
+        right: '0%',
+        bottom:"-7%"
+    },
       title: {
-        text: '{b|6.55 }',
-        subtext: '{a|国有银行平均得分}',
+        text: '{b|前十实体}',
+        subtext: '{a|词频分析}',
         subtextStyle: {
           rich: {
             a: {
-              fontSize: '16'
+              fontSize: '18'
             }
           }
         },
         textStyle: {
           rich: {
             b: {
-              fontSize: '30'
+              fontSize: '18'
             }
           }
         },
         left: 'center',
-        top: '38%'
+        top: '40%'
       },
       tooltip: {},
       series: [
         {
-          name: 'ESG分数',
+          name: '实体频率',
           type: 'pie', //环形图的type和饼图相同
-          radius: ['60%', '80%'], //饼图的半径，第一个为内半径，第二个为外半径
+          radius: ['50%', '80%'], //饼图的半径，第一个为内半径，第二个为外半径
           avoidLabelOverlap: false,
-          color: ['#eeeeee', '#a00b09'],
+          color: ['#85dbe1', '#258bbc','#7aa9e6','#34b8be','#2da2bf','#afe5e9','#cde3d9','#6ea39f','#349f9c','#cddff0'],
           label: {
-            normal: {
-              //正常的样式
-              show: false
-            },
+            show: true,
+            position: 'inside',
+            color:'#fff',
+            formatter: '{c}',
             emphasis: {
               //选中时候的样式
-              show: false
+              show: true
             }
           }, //提示文字
           labelLine: {
-            normal: {
-              show: false
-            }
+              show: true,
           },
           data: [
-            { value: 3.45, name: '' },
-            { value: 6.55, name: '国有银行平均得分' }
+            { value: 2881, name: '台湾' },
+            { value: 2500, name: '美国' },
+            { value: 1261, name: '中国' },
+            { value: 1229, name: '大陆' },
+            { value: 1034, name: '中国大陆' },
+            { value: 486, name: '民进党当局' },
+            { value: 393, name: '两岸同胞' },
+            { value: 369, name: '一个中国原则' },
+            { value: 343, name: '民进党' },
+            { value: 301, name: '美方' }
           ]
         }
       ]
     }
     const option1 = {
+      legend: {
+        orient: 'vertical',
+        right: '15%',
+    },
       title: {
-        text: '{b|6.30}',
-        subtext: '{a|农村商业银行平均得分}',
+        text: '{b|不同情感}',
+        subtext: '{a|立场分布}',
         subtextStyle: {
           rich: {
             a: {
@@ -340,7 +375,7 @@ export default defineComponent({
         textStyle: {
           rich: {
             b: {
-              fontSize: '30'
+              fontSize: '16'
             }
           }
         },
@@ -350,19 +385,19 @@ export default defineComponent({
       tooltip: {},
       series: [
         {
-          name: 'ESG分数',
+          name: '情感频率',
           type: 'pie', //环形图的type和饼图相同
-          radius: ['60%', '80%'], //饼图的半径，第一个为内半径，第二个为外半径
+          radius: ['50%', '80%'], //饼图的半径，第一个为内半径，第二个为外半径
           avoidLabelOverlap: false,
-          color: ['#eeeeee', '#69d139'],
+          color: ['rgb(0, 53, 0,0.5)','#cccccc', 'rgb(136, 0, 0,0.5)'],
           label: {
-            normal: {
-              //正常的样式
-              show: false
-            },
+            show: true,
+            position: 'inside',
+            color:'#fff',
+            formatter: '{c}',
             emphasis: {
               //选中时候的样式
-              show: false
+              show: true
             }
           }, //提示文字
           labelLine: {
@@ -371,16 +406,17 @@ export default defineComponent({
             }
           },
           data: [
-            { value: 3.7, name: '' },
-            { value: 6.3, name: '农村商业银行平均得分' }
+            { value: 2775, name: 'positive' },
+            { value: 729, name: 'neutral' },
+            { value: 1378, name: 'negative' }
           ]
         }
       ]
     }
     const option2 = {
       title: {
-        text: '{b|5.39}',
-        subtext: '{a|城市商业银行平均得分}',
+        text: '{b|台湾}',
+        subtext: '{a|情感分析}',
         subtextStyle: {
           rich: {
             a: {
@@ -391,7 +427,7 @@ export default defineComponent({
         textStyle: {
           rich: {
             b: {
-              fontSize: '30'
+              fontSize: '26'
             }
           }
         },
@@ -401,19 +437,19 @@ export default defineComponent({
       tooltip: {},
       series: [
         {
-          name: 'ESG分数',
+          name: '情感频率',
           type: 'pie', //环形图的type和饼图相同
-          radius: ['60%', '80%'], //饼图的半径，第一个为内半径，第二个为外半径
+          radius: ['50%', '80%'], //饼图的半径，第一个为内半径，第二个为外半径
           avoidLabelOverlap: false,
-          color: ['#eeeeee', '#AFF6FF'],
+          color: ['#85dbe1', '#258bbc','#7aa9e6'],
           label: {
-            normal: {
-              //正常的样式
-              show: false
-            },
+            show: true,
+            position: 'inside',
+            color:'#fff',
+            formatter: '{c}',
             emphasis: {
               //选中时候的样式
-              show: false
+              show: true
             }
           }, //提示文字
           labelLine: {
@@ -422,16 +458,17 @@ export default defineComponent({
             }
           },
           data: [
-            { value: 4.61, name: '' },
-            { value: 5.39, name: '城市商业银行平均得分' }
+            { value: 328, name: 'positive' },
+            { value: 1641, name: 'neutral' },
+            { value: 939, name: 'negative' }
           ]
         }
       ]
     }
     const option3 = {
       title: {
-        text: '{b|5.52}',
-        subtext: '{a|股份制银行平均得分}',
+        text: '{b|美国}',
+        subtext: '{a|情感分析}',
         subtextStyle: {
           rich: {
             a: {
@@ -442,7 +479,7 @@ export default defineComponent({
         textStyle: {
           rich: {
             b: {
-              fontSize: '30'
+              fontSize: '26'
             }
           }
         },
@@ -452,19 +489,19 @@ export default defineComponent({
       tooltip: {},
       series: [
         {
-          name: 'ESG分数',
+          name: '情感频率',
           type: 'pie', //环形图的type和饼图相同
-          radius: ['60%', '80%'], //饼图的半径，第一个为内半径，第二个为外半径
+          radius: ['50%', '80%'], //饼图的半径，第一个为内半径，第二个为外半径
           avoidLabelOverlap: false,
-          color: ['#eeeeee', '#F9D858'],
+          color: ['#34b8be','#2da2bf','#afe5e9'],
           label: {
-            normal: {
-              //正常的样式
-              show: false
-            },
+            show: true,
+            position: 'inside',
+            color:'#fff',
+            formatter: '{c}',
             emphasis: {
               //选中时候的样式
-              show: false
+              show: true
             }
           }, //提示文字
           labelLine: {
@@ -473,189 +510,65 @@ export default defineComponent({
             }
           },
           data: [
-            { value: 4.48, name: '' },
-            { value: 5.52, name: '股份制银行平均得分' }
+            { value: 328, name: 'positive' },
+            { value: 76, name: 'neutral' },
+            { value: 2402, name: 'negative' }
           ]
         }
       ]
     }
-
-    const color = '#5470C6'
     const option4 = {
       title: {
-        text: '中国金融业ESG表现',
+        text: '{b|中国}',
+        subtext: '{a|情感分析}',
+        subtextStyle: {
+          rich: {
+            a: {
+              fontSize: '16'
+            }
+          }
+        },
         textStyle: {
-          fontSize: '24',
-          color: '#606060'
+          rich: {
+            b: {
+              fontSize: '26'
+            }
+          }
         },
         left: 'center',
-        top: '30'
+        top: '38%'
       },
-      color: color,
-      tooltip: {
-        trigger: 'none',
-        axisPointer: {
-          type: 'cross'
-        }
-      },
-      legend: {
-        data: ['多元金融', '银行'],
-        top: 40,
-        right: 80
-      },
-      grid: {
-        top: 70,
-        bottom: 50
-      },
-      xAxis: [
-        {
-          type: 'category',
-          axisTick: {
-            alignWithLabel: true
-          },
-          axisLine: {
-            onZero: false,
-            lineStyle: {
-              color: color
-            }
-          },
-          axisPointer: {
-            label: {
-              formatter: function (params) {
-                return (
-                  'USD/PRICE  ' +
-                 params.value +
-                 (params.seriesData.length ? '：' + params.seriesData[0].data : '')
-                )
-              }
-            }
-          },
-          data: ['2018', '2019', '2020', '2021', '2022', '2023']
-        }
-      ],
-      yAxis: [
-        {
-          type: 'value',
-          max: 7,
-          min: 5
-        }
-      ],
+      tooltip: {},
       series: [
         {
-          name: '银行',
-          type: 'line',
-          smooth: true,
-          emphasis: {
-            focus: 'series'
-          },
-          data: [5.76, 5.7, 5.63, 6.27, 6.01, 6.52],
-          itemStyle: {
+          name: '情感频率',
+          type: 'pie', //环形图的type和饼图相同
+          radius: ['50%', '80%'], //饼图的半径，第一个为内半径，第二个为外半径
+          avoidLabelOverlap: false,
+          color: ['#6ea39f','#349f9c','#cddff0'],
+          label: {
+            show: true,
+            position: 'inside',
+            color:'#fff',
+            formatter: '{c}',
+            emphasis: {
+              //选中时候的样式
+              show: true
+            }
+          }, //提示文字
+          labelLine: {
             normal: {
-              color: '#AAE708', //改变折线点的颜色
-              lineStyle: {
-                color: '#AAE708' //改变折线颜色
-              }
+              show: false
             }
-          }
-        },
-        {
-          name: '多元金融',
-          type: 'line',
-          smooth: true,
-          emphasis: {
-            focus: 'series'
           },
-          data: [5.9, 5.94, 6.01, 6, 6.14, 6.22]
+          data: [
+            { value: 1252, name: 'positive' },
+            { value: 6, name: 'neutral' },
+            { value: 3, name: 'negative' }
+          ]
         }
       ]
     }
-    const option5 = {
-      title: {
-        text: 'ESG评分前五银行',
-        textStyle: {
-          fontSize: '20',
-          color: '#606060',
-          lineHeight: '30'
-        },
-        left: 'center',
-        top: '30'
-      },
-      yAxis: {
-        type: 'category',
-        axisLine: {
-          show: false,
-          lineStyle: {
-            color: '#9BA1B5'
-          }
-        },
-        axisTick: {
-          show: false
-        },
-        data: ['平安银行', '兴业银行', '农业银行', '渝农银行', '招商银行']
-      },
-      xAxis: {
-        type: 'value',
-        max: 10,
-        axisLine: {
-          lineStyle: {
-            color: '#9BA1B5'
-          }
-        },
-        axisTick: {
-          show: false
-        },
-        splitLine: {
-          show: false
-        }
-      },
-      grid: {
-        // 控制Y轴到柱的距离
-        left: 60,
-        bottom: 52
-      },
-      series: [
-        {
-          type: 'bar',
-          barWidth: 43,
-          barGap: '10%',
-          stack: '1',
-          itemStyle: {
-            color: '#88c383'
-          },
-          data: [1.68, 2.64, 2.82, 2.67, 2.07],
-          emphasis: {
-            focus: 'series'
-          }
-        },
-        {
-          type: 'bar',
-          barWidth: 43,
-          barGap: '10%',
-          stack: '1',
-          itemStyle: {
-            color: '#9dd4e3'
-          },
-          data: [2.0, 1.77, 1.63, 1.95, 1.97],
-          emphasis: {
-            focus: 'series'
-          }
-        },
-        {
-          type: 'bar',
-          barWidth: 43,
-          barGap: '10%',
-          stack: '1',
-          itemStyle: {
-            color: '#ffdc7f'
-          },
-          data: [3, 2.31, 2.31, 2.24, 3.2],
-          emphasis: {
-            focus: 'series'
-          }
-        }
-      ]
-    }
-
     const newsOption = {
       grid: [
         {
@@ -710,8 +623,7 @@ export default defineComponent({
     }
 
     newsLineChart.setOption(newsOption)
-    barChart.setOption(option5)
-    lineChart.setOption(option4)
+    myChart5.setOption(option4)
     myChart4.setOption(option3)
     myChart3.setOption(option2)
     myChart2.setOption(option1)
@@ -753,6 +665,7 @@ export default defineComponent({
    overflow: hidden !important;
    height: 100vh !important;
    position: relative;
+   margin-bottom: 15vh;
  }
  .title {
    height: 15vh;
@@ -860,14 +773,47 @@ export default defineComponent({
 .learn-more-box {
  width: 20vw;
 }
+.charts-box{
+  display: flex;
+  width: 95vw;
+  align-items: center;
+  justify-content: center;
 .circle-charts-box {
- width: 80vw;
+ width: 60vw;
+ height:55vh;
  display: grid;
+ grid-template-rows: 8fr 7fr;
+ grid-template-columns: 1fr 1fr 1fr 1.5fr 1.5fr 1.5fr;
+ grid-template-areas: "a b b b"
+                      "a c d d";
+ div:nth-of-type(1){
+  width: 27vw;
+  height: 50vh;
+  grid-area: 1/1/3/3;
+ }
+ div:nth-of-type(2){
+  width: 36vw;
+  height: 30vh;
+  grid-area: 1/3/3/6;
+  margin-top:5vh;
+ }
+ div:nth-of-type(3){
+  width: 12vw;
+  height: 25vh;
+  grid-area: 2/3/4/4;
+ }
+ div:nth-of-type(4){
+  width: 12vw;
+  height: 25vh;
+  grid-area: 2/4/4/5;
+ }
+ div:nth-of-type(5){
+  width: 12vw;
+  height: 25vh;
+  grid-area: 2/5/4/6;
+ }
  
 }
-.circle-charts-box div {
- width: 27vw;
- height: 35vh;
 }
 .statistics {
  display: flex;
@@ -875,19 +821,6 @@ export default defineComponent({
  align-items: center;
  margin-bottom: 50px;
  margin-top:20vh;
-}
-.line-charts-box {
- width: 80vw;
- height: 55vh;
- display: flex;
-}
-.line-charts-box :nth-child(1) {
- width: 48vw;
- height: 55vh;
-}
-.line-charts-box :nth-child(2) {
- width: 32vw;
- height: 55vh;
 }
 .title div:hover {
  cursor: pointer;
@@ -946,41 +879,13 @@ export default defineComponent({
    opacity: 0.6;
  }
 }
-.el-carousel__item h3 {
- color: #475669;
- opacity: 0.75;
- line-height: 200px;
- margin: 0;
- text-align: center;
-}
-
-.el-carousel__item:nth-child(2n) {
- background-color: #99a9bf;
-}
-
-.el-carousel__item:nth-child(2n + 1) {
- background-color: #d3dce6;
-}
-.data-container{
- margin-top: 8vh;
- width: 100vw;
- display: flex;
- align-items: center;
- justify-content: space-around;
- #side-box{
-   height: 65vh;
-   display: flex;
-   flex-direction: column;
-   justify-content: flex-start;
-   align-items: flex-start;
-   .discribsion{
+.discribsion{
    font-size: 2rem;
    font-family:  REEJI-CHAO-RanSerifGB-Flash;
    align-self: flex-start;
-   width: 35vw;
-   height:20vh;
+   width: 36vw;
+   height:22vh;
    margin-left: 5vw;
-   margin-bottom: 2vh;
    margin-top: 4vh;
    color: black;
    span {
@@ -1003,12 +908,6 @@ export default defineComponent({
 
    span:nth-of-type(2) i {
      animation-delay: .1s;
-     font-size: 4.2rem;
-     background-image: linear-gradient(to right, rgb(0, 36, 82), rgb(110, 128, 150));
-     background-clip: text;
-     -webkit-background-clip: text;
-     color: transparent;
-     font-weight: bold;
    }
    span:nth-of-type(3) i {
      animation-delay: .2s;
@@ -1018,12 +917,6 @@ export default defineComponent({
    }
    span:nth-of-type(5) i {
      animation-delay: .4s;
-     font-size: 4.2rem;
-     background-image: linear-gradient(to right, rgb(0, 36, 82), rgb(110, 128, 150));
-     background-clip: text;
-     -webkit-background-clip: text;
-     color: transparent;
-     font-weight: bold;
    }
 
 span:nth-of-type(6) i {
@@ -1054,6 +947,36 @@ span:nth-of-type(4) {
      animation-delay: .5s;
    }
  }
+.data-container{
+ margin-top: 8vh;
+ width: 100vw;
+ display: flex;
+ align-items: center;
+ justify-content: space-around;
+ .side-box{
+   height: 65vh;
+   display: flex;
+   flex-direction: column;
+   justify-content: flex-start;
+   align-items: flex-start;
+   span:nth-of-type(2) i {
+     animation-delay: .1s;
+     font-size: 4.2rem;
+     background-image: linear-gradient(to right, rgb(0, 36, 82), rgb(110, 128, 150));
+     background-clip: text;
+     -webkit-background-clip: text;
+     color: transparent;
+     font-weight: bold;
+   }
+   span:nth-of-type(5) i {
+     animation-delay: .4s;
+     font-size: 4.2rem;
+     background-image: linear-gradient(to right, rgb(0, 36, 82), rgb(110, 128, 150));
+     background-clip: text;
+     -webkit-background-clip: text;
+     color: transparent;
+     font-weight: bold;
+   }
  .chart-box{
    width: 32vw;
    div{
@@ -1068,5 +991,12 @@ span:nth-of-type(4) {
      height: 21vh;
    }
  }
+}
+.worcloud-dis-box{
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 </style>
