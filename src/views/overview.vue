@@ -302,24 +302,24 @@ export default defineComponent({
         bottom:"-7%"
     },
       title: {
-        text: '{b|前十实体}',
+        text: '{b|频率前十实体}',
         subtext: '{a|词频分析}',
         subtextStyle: {
           rich: {
             a: {
-              fontSize: '18'
+              fontSize: '20'
             }
           }
         },
         textStyle: {
           rich: {
             b: {
-              fontSize: '18'
+              fontSize: '26'
             }
           }
         },
         left: 'center',
-        top: '40%'
+        top: '45%'
       },
       tooltip: {},
       series: [
@@ -375,7 +375,7 @@ export default defineComponent({
         textStyle: {
           rich: {
             b: {
-              fontSize: '16'
+              fontSize: '26'
             }
           }
         },
