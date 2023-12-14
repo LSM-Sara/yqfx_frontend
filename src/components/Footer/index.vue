@@ -9,7 +9,7 @@
       <p class="text">
         <Octocat />
         联系我们 了解更多
-        <a target="_blank" :href="link" class="github-link"> 银行业ESG评级平台 </a>
+        <a target="_blank" :href="link" class="github-link"> 实体情感识别分析平台 </a>
       </p>
     </div>
   </footer>

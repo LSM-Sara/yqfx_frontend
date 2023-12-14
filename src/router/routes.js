@@ -18,9 +18,9 @@ const routes = [
     component: () => import('@/views/overview.vue')
   },
   {
-    path: '/esgdata',
-    name: 'esgdata',
-    component: () => import('@/views/esgdata.vue')
+    path: '/model',
+    name: 'model',
+    component: () => import('@/views/model.vue')
   }
 ]
 

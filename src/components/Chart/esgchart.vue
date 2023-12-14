@@ -9,7 +9,7 @@
       <img src="../assets/logo.png" class="logo" />
       <div @click="goToHome">首页</div>
       <div @click="goToEsg">数据集分析</div>
-      <div @click="goToEsgData">模型体验</div>
+      <div @click="goTomodel">模型体验</div>
       <div>关于我们</div>
     </div>
     </div>
@@ -27,7 +27,7 @@
   import Chart from '@/components/Chart/chart.vue'
   
   export default defineComponent({
-    name: 'EsgData',
+    name: 'model',
     components: { Chart },
     setup() {
       const goToEsg = () => {
@@ -42,16 +42,16 @@
           path: '/'
         })
       }
-      const goToEsgData = () => {
-        console.log('esgdata')
+      const goTomodel = () => {
+        console.log('model')
         router.push({
-          path: '/esgdata'
+          path: '/model'
         })
       }
       return {
         goToEsg,
         goToHome,
-        goToEsgData
+        goTomodel
       }
     }
   })
