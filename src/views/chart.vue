@@ -10,7 +10,7 @@
       <div @click="goToHome">首页</div>
       <div @click="goToChart">数据集分析</div>
       <div @click="goTomodel">模型体验</div>
-      <div>关于我们</div>
+      <div @click="goToAbout">关于我们</div>
     </div>
     </div>
     <div class="display-container">
@@ -48,10 +48,17 @@
           path: '/model'
         })
       }
+      const goToAbout = () => {
+        console.log('About')
+        router.push({
+          path: '/about'
+        })
+      }
       return {
         goToHome,
         goTomodel,
-        goToChart
+        goToChart,
+        goToAbout
       }
     }
   })

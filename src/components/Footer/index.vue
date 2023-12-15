@@ -30,7 +30,7 @@ export default defineComponent({
     }
   },
   setup() {
-    const link = ref('https://github.com/pdsuwwz')
+    const link = ref('https://github.com/LSM-Sara/yqfx_frontend')
     return {
       link
     }

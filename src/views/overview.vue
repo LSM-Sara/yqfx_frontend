@@ -22,9 +22,11 @@
       <div @click="goTomodel">
         模型体验
       </div>
-      <div>关于我们</div>
+      <div @click="goToAbout">
+        关于我们
+      </div>
     </div>
-  </el-affix>
+    </el-affix>
     <div class="main-title-container">
       <img
         class="background"
@@ -41,7 +43,7 @@
         v-show="showTitle"
         class="sub-title"
       >
-        舆情分析第x组结课实验
+        舆情分析结课实验
       </div>
     </div>
     <div class="data-container">
@@ -250,6 +252,12 @@ export default defineComponent({
           path: '/model'
         })
       }
+      const goToAbout = () => {
+        console.log('About')
+        router.push({
+          path: '/about'
+        })
+      }
     keyWordsList.value = wordCloudData.slice(0, 500)
     onMounted(() => {
       // 监听滚动事件
@@ -285,7 +293,8 @@ export default defineComponent({
       url,
       goToChart,
       goToHome,
-      goTomodel
+      goTomodel,
+      goToAbout
     }
   },
   mounted () {

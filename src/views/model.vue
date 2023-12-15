@@ -12,7 +12,7 @@
       <div @click="goToHome">首页</div>
       <div @click="goToChart">数据集分析</div>
       <div @click="goTomodel">模型体验</div>
-      <div>关于我们</div>
+      <div @click="goToAbout">关于我们</div>
     </div>
   </div>
   <div class="display-container">
@@ -39,13 +39,13 @@
     </el-col>
   </el-row>
     <div class="display-box">
-    <el-empty description="还没有输入" v-if="empty" />
-    <div v-if="!empty">
-      <div v-for="(item, index) in dialogs" :key="index" class="list-item">
-        <el-avatar class="el-avatar"> {{item.type}} </el-avatar>
-        <p class="content">{{ item.text }}</p>
-    </div>
-    </div>
+      <el-empty description="还没有输入" v-if="empty" />
+      <div v-if="!empty">
+        <div v-for="(item, index) in dialogs" :key="index" class="list-item">
+          <el-avatar class="el-avatar"> {{item.type}} </el-avatar>
+          <p class="content">{{ item.text }}</p>
+        </div>
+      </div>
     </div>
     <el-input 
         class="input-box" 
@@ -96,6 +96,12 @@ export default defineComponent({
           path: '/model'
         })
       }
+      const goToAbout = () => {
+        console.log('About')
+        router.push({
+          path: '/about'
+        })
+      }
     const handleSelect=(index, indexPath)=>{
       console.log(index, indexPath)
       key=index;
@@ -140,6 +146,7 @@ export default defineComponent({
       goToChart,
       goToHome,
       goTomodel,
+      goToAbout,
       handleSelect,
       handleUpload
     }
